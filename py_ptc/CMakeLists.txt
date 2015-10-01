@@ -1,0 +1,17 @@
+INCLUDE(${SWIG_USE_FILE})
+
+INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_PATH} ../core ./)
+
+set(SWIG_HEADERS
+    ../core/ri.h
+)
+
+set(SWIG_MODULE_ri_EXTRA_DEPS ${SWIG_HEADERS})
+SET_PROPERTY(SOURCE pyptc.i PROPERTY CPLUSPLUS ON)
+SWIG_ADD_MODULE(ptc python pyptc.i)
+SWIG_LINK_LIBRARIES(ptc ${PYTHON_LIBRARIES} core common)
+
+install(DIRECTORY py_ptc_tests DESTINATION ${CMAKE_BINARY_DIR}/pixie/examples)
+install(TARGETS _ptc DESTINATION ${CMAKE_BINARY_DIR}/pixie/python)
+install(FILES ${CMAKE_BINARY_DIR}/py_ptc/ptc.py DESTINATION ${CMAKE_BINARY_DIR}/pixie/python)
+

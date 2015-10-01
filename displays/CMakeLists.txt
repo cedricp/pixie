@@ -1,0 +1,5 @@
+if (X11_FOUND)
+add_subdirectory (framebuffer) 
+endif()
+add_subdirectory (file) 
+add_subdirectory (openexr) 
