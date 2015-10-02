@@ -1,0 +1,10 @@
+SET (SOURCES texmake.cpp)
+
+SET(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
+
+INCLUDE_DIRECTORIES(../)
+ADD_EXECUTABLE(texmake ${SOURCES})
+TARGET_LINK_LIBRARIES(texmake core common dl pthread stdc++)
+
+INSTALL(TARGETS texmake DESTINATION ${CMAKE_BINARY_DIR}/pixie/bin)
+

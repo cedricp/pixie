@@ -1,0 +1,10 @@
+SET (SOURCES show.cpp)
+
+SET(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
+
+INCLUDE_DIRECTORIES(../)
+ADD_EXECUTABLE(show ${SOURCES})
+TARGET_LINK_LIBRARIES(show core common dl pthread stdc++)
+
+INSTALL(TARGETS show DESTINATION ${CMAKE_BINARY_DIR}/pixie/bin)
+
