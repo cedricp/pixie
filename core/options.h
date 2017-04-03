@@ -2,7 +2,7 @@
 //
 //                             Pixie
 //
-// Copyright © 1999 - 2003, Okan Arikan
+// Copyright ï¿½ 1999 - 2003, Okan Arikan
 //
 // Contact: okan@cs.utexas.edu
 //
@@ -244,7 +244,7 @@ public:
 
 	int							threadStride;									// The number of buckets to distribute to threads at a time
 
-	int							geoCacheMemory;									// The ammount of memory to dedicate to tesselation caches
+	size_t						geoCacheMemory;									// The ammount of memory to dedicate to tesselation caches
 
 	int							maxEyeSplits;									// Maximum number of eye splits
 																				// The number of times the bucket will be rendered

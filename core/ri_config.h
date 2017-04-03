@@ -2,7 +2,7 @@
 //
 //                             Pixie
 //
-// Copyright © 1999 - 2003, Okan Arikan
+// Copyright ï¿½ 1999 - 2003, Okan Arikan
 //
 // Contact: okan@cs.utexas.edu
 //
@@ -49,7 +49,7 @@
 #define DEFAULT_MAX_TEXTURESIZE	20000000
 #define DEFAULT_MAX_BRICKSIZE	10000000
 #define DEFAULT_THREAD_STRIDE	3
-#define	DEFAULT_GEO_CACHE_SIZE	30720*1024
+#define	DEFAULT_GEO_CACHE_SIZE	(size_t)4*1024*1024*1024
 
 // The default network port
 #define	DEFAULT_SERVER_PORT		24914

@@ -140,6 +140,7 @@ void	*osLoadModule(const char *name) {
 	// Unix dlopen expects an absolute path or the shared object to be in LD_LIBRARY_PATH
 	// Convert the name to an absolute file name
 	if (cModule == NULL) {
+		fprintf(stderr, "Cannot load shared object %s : %s\n", name, dlerror());
 		char	absoluteName[MAXPATHLEN];
 		char	*absolute	=	realpath(name,absoluteName);
 
@@ -148,7 +149,6 @@ void	*osLoadModule(const char *name) {
 		}
 	}
 #endif
-
 	return cModule;
 }
 

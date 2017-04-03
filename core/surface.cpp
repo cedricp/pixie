@@ -2,7 +2,7 @@
 //
 //                             Pixie
 //
-// Copyright © 1999 - 2003, Okan Arikan
+// Copyright ï¿½ 1999 - 2003, Okan Arikan
 //
 // Contact: okan@cs.utexas.edu
 //
@@ -524,8 +524,8 @@ void	CPatch::splitToChildren(CShadingContext *r,int dir) {
 
 
 int					*CTesselationPatch::lastRefNumbers[TESSELATION_NUM_LEVELS];
-int					*CTesselationPatch::tesselationUsedMemory[TESSELATION_NUM_LEVELS];
-int					CTesselationPatch::tesselationMaxMemory[TESSELATION_NUM_LEVELS];
+size_t				*CTesselationPatch::tesselationUsedMemory[TESSELATION_NUM_LEVELS];
+size_t				CTesselationPatch::tesselationMaxMemory[TESSELATION_NUM_LEVELS];
 CTesselationPatch	*CTesselationPatch::tesselationList;
 
 
@@ -1941,17 +1941,17 @@ void		CTesselationPatch::splitToChildren(CShadingContext *context) {
 // Description			:	initialize the thread data for tesselations
 // Return Value			:
 // Comments				:
-void		CTesselationPatch::initTesselations(int geoCacheMemory) {
+void		CTesselationPatch::initTesselations(size_t geoCacheMemory) {
 	for (int i=0;i<TESSELATION_NUM_LEVELS;i++) {
 		lastRefNumbers[i]			=	new int[CRenderer::numThreads];
-		tesselationUsedMemory[i]	=	new int[CRenderer::numThreads];
+		tesselationUsedMemory[i]	=	new size_t[CRenderer::numThreads];
 
 		for (int j=0;j<CRenderer::numThreads;j++) {
 			tesselationUsedMemory[i][j]	=	0;
 		}
 
-		// calculate the maximum tesselation cache size per thread, per level
-		tesselationMaxMemory[i] = (int) ceil((float) geoCacheMemory / (float) TESSELATION_NUM_LEVELS / (float) CRenderer::numThreads);
+		// calculate the maximum tesselation cache size, per level
+		tesselationMaxMemory[i] = (size_t)geoCacheMemory / (size_t)TESSELATION_NUM_LEVELS;
 	}
 
 	// Init stats
@@ -2028,10 +2028,8 @@ void	CTesselationPatch::tesselationQuickSort(CTesselationEntry **activeTesselati
 void		CTesselationPatch::purgeTesselations(CShadingContext *context,CTesselationPatch *entry,int thread,int level,int all) {
 	// Do we have stuff to free ?
 	if (tesselationList == NULL)	return;
-
 	// Ensure no other thread creates new tesselations whilst we flush
 	osLock(CRenderer::tesselateMutex);
-
 
 	// Figure out how many tesselations of this level we have in memory
 	int				i,j;
@@ -2056,7 +2054,6 @@ void		CTesselationPatch::purgeTesselations(CShadingContext *context,CTesselation
 
 	// Sort the tesselations from last used to the most recently used
 	if (i > 1)	tesselationQuickSort(activeTesselations,0,i-1,thread);
-
 	// Free the memory
 	if (all)	tesselationMaxMemory[level]	=	0;
 	for (j=0;(j<i) && (tesselationUsedMemory[level][thread] > (tesselationMaxMemory[level]/2));j++) {

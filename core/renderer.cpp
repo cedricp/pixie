@@ -182,7 +182,7 @@ int								CRenderer::maxPhotonDepth;
 int								CRenderer::bucketWidth,CRenderer::bucketHeight;
 int								CRenderer::netXBuckets,CRenderer::netYBuckets;
 int								CRenderer::threadStride;
-int								CRenderer::geoCacheSize;
+size_t							CRenderer::geoCacheSize;
 int								CRenderer::maxEyeSplits;
 float							CRenderer::tsmThreshold;
 float							CRenderer::dimgThreshold;

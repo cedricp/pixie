@@ -1184,39 +1184,59 @@ void		CStochastic::deepImageCompute() {
 
 				// Insert a dummy pixel
 				deepPixel pix;
+				vector opac, accumulated_opacity, transparency, inverse_sample_opacity;
 				deepPixels.push_back(pix);
 
 				for (i=0;i<numSamples;++i) {
 					// Fragment opacity
-					vector opacity;
 					const CFragment	*cSample 	= fSamples[i];
 					const float filterResponse 	= fWeights[i];
+					initv(accumulated_opacity, 0.f);
 
-					opacity[RED_IDX] 	= cSample->opacity[RED_IDX];
-					opacity[GREEN_IDX] 	= cSample->opacity[GREEN_IDX];
-					opacity[BLUE_IDX] 	= cSample->opacity[BLUE_IDX];
+					while(cSample){
+						if (cSample->z == C_INFINITY){
+							cSample = cSample->next;
+							continue;
+						}
 
-					mulvf(opacity, filterResponse);
+						initv3(opac, cSample->opacity);
 
-					// push the sample
-					deepPixel pix;
-					pix.depth = cSample->z;
-					pix.rgba[RED_IDX] 	=	cSample->color[RED_IDX] 	* filterResponse;
-					pix.rgba[GREEN_IDX] =	cSample->color[GREEN_IDX] 	* filterResponse;
-					pix.rgba[BLUE_IDX] 	= 	cSample->color[BLUE_IDX] 	* filterResponse;
-					pix.rgba[ALPHA_IDX] = 	(opacity[RED_IDX] +  opacity[GREEN_IDX] + opacity[BLUE_IDX]) * (1.f/3.f);
+			            initv3(inverse_sample_opacity, cSample->opacity);
+			            inverse_sample_opacity[RED_IDX] 	*= (1. - accumulated_opacity[RED_IDX]);
+			            inverse_sample_opacity[GREEN_IDX] 	*= (1. - accumulated_opacity[GREEN_IDX]);
+			            inverse_sample_opacity[BLUE_IDX] 	*= (1. - accumulated_opacity[BLUE_IDX]);
+			            float layer_opacity = (inverse_sample_opacity[RED_IDX] +  inverse_sample_opacity[GREEN_IDX] + inverse_sample_opacity[BLUE_IDX]) * (1.f/3.f);
 
-					deepPixels.push_back(pix);
+						// push the sample
+						deepPixel pix;
+						pix.depth = cSample->z;
+						pix.rgba[RED_IDX] 	=	cSample->color[RED_IDX] 	* filterResponse * (1. - accumulated_opacity[RED_IDX]);
+						pix.rgba[GREEN_IDX] =	cSample->color[GREEN_IDX] 	* filterResponse * (1. - accumulated_opacity[GREEN_IDX]);
+						pix.rgba[BLUE_IDX] 	= 	cSample->color[BLUE_IDX] 	* filterResponse * (1. - accumulated_opacity[BLUE_IDX]);
+
+						pix.rgba[ALPHA_IDX] = 	layer_opacity * filterResponse;
+
+						deepPixels.push_back(pix);
+
+						opac[0] *= 1.0f -  accumulated_opacity[0];
+						opac[1] *= 1.0f -  accumulated_opacity[1];
+						opac[2] *= 1.0f -  accumulated_opacity[2];
+						addvv(accumulated_opacity, opac);
+
+						cSample = cSample->next;
+					}
 				}
 
 				int y_pos = (CRenderer::bucketHeight * currentYBucket) + y;
 				int x_pos = (CRenderer::bucketWidth  * currentXBucket) + x;
 				// Integrate samples
-				CRenderer::deepImg->doPixelIntegration(deepPixels, NULL, true);
+				std::vector<deepPixel> deepMerge;
+				CRenderer::deepImg->get_pixel_color_list(deepMerge, x_pos, y_pos);
+				CRenderer::deepImg->doPixelIntegration(deepPixels, &deepMerge, true);
 
 				if (renderToFile){
 					// Store the compressed data to deep image buffer
-					CRenderer::deepImg->setPixelDepth(x_pos,y_pos, deepPixels);
+					CRenderer::deepImg->setPixelDepth(x_pos,y_pos, deepPixels, false);
 				}
 
 				if (CRenderer::deepImageWrap){

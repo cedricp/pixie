@@ -705,7 +705,7 @@ void	CRenderer::computeDisplayData() {
 		if (strcmp(outDevice,"deepimage") == 0) {
 			int					j;
 
-			// The TSM is hardcoded
+			// The deepImage display is hardcoded
 			datas[numDisplays].module	=	NULL;
 			datas[numDisplays].handle	=	NULL;
 
@@ -723,6 +723,7 @@ void	CRenderer::computeDisplayData() {
 				}
 
 				if (deepImg != NULL) {
+					char* deep_image_merge = NULL;
 					numActiveDisplays++;
 					flags						|=	OPTIONS_FLAGS_DEEP_IMAGE_RENDERING;
 
@@ -730,14 +731,20 @@ void	CRenderer::computeDisplayData() {
 
 					// Parse the dimg parameters
 					for (j=0;j<cDisplay->numParameters;j++) {
-						if (strcmp(cDisplay->parameters[j].name,"threshold") == 0) {
+						if (strcmp(cDisplay->parameters[j].name,"deepcompression") == 0) {
 							float	*val	=	(float *) cDisplay->parameters[j].data;
 							dimgThreshold	=	val[0];
+						}
+						if (strcmp(cDisplay->parameters[j].name,"mergedeep") == 0) {
+							deep_image_merge = ((char*)cDisplay->parameters[j].data);
 						}
 					}
 					deepImg->setFilename(deepImageFileName);
 					deepImg->setCompression(dimgThreshold);
 					deepImg->setSize(xres, yres);
+					if (deep_image_merge){
+						deepImg->read(deep_image_merge);
+					}
 					deepImg->setCameraMatrix(fromWorld);
 				}
 			}

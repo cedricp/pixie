@@ -203,6 +203,10 @@ void			CRenderer::initDeclarations() {
 	declareVariable("shutteropen",			"float");
 	declareVariable("shutterclose",			"float");
 
+	// Deep image
+	declareVariable("mergedeep",			"string");
+	declareVariable("deepcompression",		"float");
+
 
 	////////////////////////////////////////////////////////////////////////////////////////////
 	//

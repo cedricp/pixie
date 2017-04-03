@@ -30,17 +30,16 @@
 // !!! Work under progress !!!
 ////////////////////////////////////////////////////////////////////////
 
+#include "common/global.h"
+#include "common/os.h"
+#include "opengl.h"
+#include "interface.h"
 
 #ifdef QT_BUILD
 #include "opengl-qt.h"
 #else
 #include "opengl-fltk.h"
 #endif
-
-#include "common/global.h"
-#include "common/os.h"
-#include "opengl.h"
-#include "interface.h"
 
 
 

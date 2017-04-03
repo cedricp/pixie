@@ -129,6 +129,13 @@ inline	void	mulvf(SCALAR_TYPE *result,const SCALAR_TYPE m) {
 	result[2]	*=	m;
 }
 
+inline	void	mulv4f(SCALAR_TYPE *result,const SCALAR_TYPE m) {
+	result[0]	*=	m;
+	result[1]	*=	m;
+	result[2]	*=	m;
+	result[3]	*=	m;
+}
+
 inline	void	mulvv(SCALAR_TYPE	*result,const SCALAR_TYPE *s1,const SCALAR_TYPE *s2) {
 	result[0]	=	s1[0]*s2[0];
 	result[1]	=	s1[1]*s2[1];
@@ -152,6 +159,12 @@ inline	void	divvv4(SCALAR_TYPE *result,const SCALAR_TYPE s2) {
 	result[1]	/=  s2;
 	result[2]	/=  s2;
 	result[3]	/=  s2;
+}
+
+inline	void	divvv3(SCALAR_TYPE *result,const SCALAR_TYPE s2) {
+	result[0]	/=  s2;
+	result[1]	/=  s2;
+	result[2]	/=  s2;
 }
 
 inline	void	divvv(SCALAR_TYPE *result,const SCALAR_TYPE *s1) {

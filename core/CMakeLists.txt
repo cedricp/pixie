@@ -87,6 +87,6 @@ add_library(core SHARED ${SOURCES} ${HEADERS} ${BISON_DsoParser_OUTPUTS}
 target_link_libraries(core ${exrlibs} ${TIFF_LIBRARIES} ${PNG_LIBRARY} ${LINK_VDB} ${LINK_ABC} z)
 install(TARGETS core DESTINATION ${CMAKE_BINARY_DIR}/pixie/lib)
 if (UNIX)
-install(CODE "EXECUTE_PROCESS (COMMAND cp -L ${TBB_LIBRARY_DIR}/libtbb*.so* ${CMAKE_BINARY_DIR}/pixie/lib)")
-install(CODE "EXECUTE_PROCESS (COMMAND cp -L ${OPENEXR_LIBRARY_DIR}/lib*.so* ${CMAKE_BINARY_DIR}/pixie/lib)")
+install(CODE "EXECUTE_PROCESS (COMMAND cp -L ${TBB_INSTALL_DIR}/lib/libtbb*.so* ${CMAKE_BINARY_DIR}/pixie/lib)")
+install(CODE "EXECUTE_PROCESS (COMMAND cp -L ${OPENEXR_ROOT}/lib/lib*.so* ${CMAKE_BINARY_DIR}/pixie/lib)")
 endif()

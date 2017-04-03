@@ -2,7 +2,7 @@
 //
 //                             Pixie
 //
-// Copyright © 1999 - 2003, Okan Arikan
+// Copyright ï¿½ 1999 - 2003, Okan Arikan
 //
 // Contact: okan@cs.utexas.edu
 //
@@ -90,7 +90,7 @@ public:
 
 	void					initTesselation(CShadingContext *context);
 	
-	static void				initTesselations(int geoCacheMemory);
+	static void				initTesselations(size_t geoCacheMemory);
 	static void				shutdownTesselations();
 
 private:
@@ -113,8 +113,8 @@ private:
 	// record keeping data
 	
 	static int					*lastRefNumbers[TESSELATION_NUM_LEVELS];		// Reference numbers for each thread per cache level
-	static int					*tesselationUsedMemory[TESSELATION_NUM_LEVELS];	// How much each thread has used per cache level
-	static int					tesselationMaxMemory[TESSELATION_NUM_LEVELS];	// The maximum memory allowed per thread per cache level
+	static size_t				*tesselationUsedMemory[TESSELATION_NUM_LEVELS];	// How much each thread has used per cache level
+	static size_t				tesselationMaxMemory[TESSELATION_NUM_LEVELS];	// The maximum memory allowed per thread per cache level
 	static CTesselationPatch	*tesselationList;								// Linked list of all tesselations (all levels are listed together)
 	
 	// Helper static functions

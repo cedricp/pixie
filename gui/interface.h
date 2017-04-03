@@ -30,10 +30,10 @@
 ////////////////////////////////////////////////////////////////////////
 #ifndef INTERFACE_H
 #define INTERFACE_H
+
 #include "common/global.h"
 #include "common/algebra.h"
 #include "opengl.h"
-
 
 
 const int	INTERFACE_LEFT_BUTTON	=	1;

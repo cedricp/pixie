@@ -44,8 +44,8 @@
 //
 //
 //
-#ifndef GLOBAL_H
-#define	GLOBAL_H
+#ifndef PIXIEGLOBAL_H
+#define	PIXIEGLOBAL_H
 
 // The Pixie version
 #define	VERSION_RELEASE	2

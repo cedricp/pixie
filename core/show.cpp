@@ -2,7 +2,7 @@
 //
 //                             Pixie
 //
-// Copyright © 1999 - 2003, Okan Arikan
+// Copyright ï¿½ 1999 - 2003, Okan Arikan
 //
 // Contact: okan@cs.utexas.edu
 //
@@ -66,6 +66,7 @@ CShow::CShow(int thread) : CShadingContext(thread) {
 
 		char  guimodule[512];
 		sprintf(guimodule,"%s/modules/gui.so",pixiehome);
+		printf("%s\n", guimodule);
         CView::handle		=	osLoadModule(guimodule);
 		//}
 

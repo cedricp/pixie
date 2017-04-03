@@ -49,14 +49,34 @@ public:
 	void setFilename(std::string filename);
 	void setCompression(float compression);
 	void setSize(int w, int h);
+	void getSize(int &w, int &h);
 	void setCameraMatrix(matrix m);
-	void setPixelDepth(const int &x, const int &y, std::vector<deepPixel>& pixel);
-	void doPixelIntegration(std::vector<deepPixel> &depthPixels, std::vector<deepPixel> *depthPixels_append = NULL, bool reorderFragments=false);
+	void setPixelDepth(const int &x, const int &y, std::vector<deepPixel>& pixel, bool merge = false);
 	bool write();
+	bool read(const std::string &filename);
+	bool read_append(const std::string &filename);
+	void set_pixel_color_list(std::vector<deepPixel>& pixel, const int &x, const int &y);
+	bool get_pixel_color_list(std::vector<deepPixel> &list, int x, int y);
+	void set_size(int w, int h);
+	void doPixelIntegration(std::vector<deepPixel> &depthPixels, std::vector<deepPixel> *depthPixels_append = NULL, bool reorderFragments=false);
+	float* to2DBufferFloat();
+	char* to2DBufferChar();
+
+	static bool compose_depth_values(colorrgba color, std::vector<deepPixel> &list, bool reorder_list);
+	static bool sort_pixel_depth( const deepPixel& val1 , const deepPixel& val2 )
+	{
+		if( val1.depth != val2.depth )
+			return ( val1.depth < val2.depth );
+		else
+			return val1.rgba[3] > val2.rgba[3];
+	}
 
 private:
 	impl* internalData;
 };
 
 
+
+
 #endif
+
